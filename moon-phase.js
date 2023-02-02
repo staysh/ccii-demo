@@ -1,22 +1,33 @@
 let phaseArg = 0;
 
 function setup () {
-	createCanvas(400, 400);
-	noStroke();
+	createCanvas(700, 700);
+	//noStroke();
 }
 
 function draw () {
 	background(210, 180, 220);
+	/*
 	moonPhase(phaseArg);
 	phaseArg += 0.01;
 	if (phaseArg > 1.0) {
 		phaseArg = 0;
 	}
+	*/
 
+	for(let i = 0; i < 9; i++){
+		let phase = i / 8;
+		let r = width/9/2 - 5;
+		let x = (width * i/9) + (width/9/2);
+		let y = height/2;
+		fill(0);
+		ellipse(x, y, r*2, r*2);
+		drawMoon(x, y, r, phase);
+	}
 }
 
-function moonPhase(phase) {
-	let radius = width/4;
+function drawMoon(x, y, radius, phase) {
+	//let radius = r;
 	let lext;
 	let rext; 
 	if(phase <= 0.5) {
@@ -28,7 +39,7 @@ function moonPhase(phase) {
 		rext = map(phase, 0.5, 1.0, -lext, lext);
 	}
 	push();
-	translate(width/2, height/2);
+	translate(x, y);
 	fill(255);
 	beginShape();
 		vertex(0, radius);
