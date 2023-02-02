@@ -7,16 +7,20 @@ function setup () {
 
 function draw () {
 	background(210, 180, 220);
-	/*
-	moonPhase(phaseArg);
+	
 	phaseArg += 0.01;
 	if (phaseArg > 1.0) {
 		phaseArg = 0;
 	}
-	*/
+
 
 	for(let i = 0; i < 9; i++){
 		let phase = i / 8;
+		phase += phaseArg;
+		if(phase > 1.0)
+		{
+			phase -= 1.0;
+		}
 		let r = width/9/2 - 5;
 		let x = (width * i/9) + (width/9/2);
 		let y = height/2;
