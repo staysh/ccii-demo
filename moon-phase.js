@@ -1,50 +1,72 @@
-let phaseArg = 0;
 
-let parameters = {
-		x: 0,
-		y: 0,
-		radius: 0,
-		phase: 0
+//create an empty Array
+let moons = [];
+
+//'prototype' style function for creating objects
+function moon() {
+		this.x = 0,
+		this.y = 0,
+		this.radius = 0,
+		this.phase = 0
 };
+
+//when called with 'new' the above creates
+//the same Object as this code.
+let moon1 = {
+	x: 0,
+	y: 0,
+	radius: 0,
+	phase: 0.0
+};
+
+//Arrays can stretch to fit any size on the fly
+//moons[0] = moon1; //valid moons.length = 1
+//moons[1000] = moon1; //also fine moons.length = 1001
+
 
 function setup () {
 	var cnv = createCanvas(windowWidth, windowHeight);
 	cnv.style('display', 'block');
 	//noStroke();
-	parameters.x = width / 2;
-	parameters.y = height / 2;
-	parameters.radius = 100;
+
+	//make 10 moons in a traditional way
+	for (let i = 0; i < 10; i++){
+		moons[i] = new moon();
+		moons[i].x = width/2;
+		moons[i].y = height/2;
+		moons[i].radius = 100;
+	};
 }
 
 function draw () {
 	background(210, 180, 220);
 	
-	parameters.phase += 0.01;
-	if (parameters.phase > 1.0) {
-		parameters.phase = 0;
+	//better way to iterate over arrays
+	//will give us acces to every item in
+	//an array no matter what length it is
+	for(moon of moons){	
+		moon.phase += 0.01;
+		if (moon.phase > 1.0) {
+			moon.phase = 0;
+		}
 	}
-
 
 	fill(0);
-	ellipse(width / 2, height / 2, 200, 200);
-	drawMoon(parameters);
 
-	/*
-	for(let i = 0; i < 9; i++){
-		let phase = i / 8;
-		phase += phaseArg;
-		if(phase > 1.0)
-		{
-			phase -= 1.0;
-		}
-		let r = width/9/2 - 5;
-		let x = (width * i/9) + (width/9/2);
-		let y = height/2;
-		fill(0);
-		ellipse(x, y, r*2, r*2);
-		drawMoon(x, y, r, phase);
+	for(moon of moons){
+		ellipse(moon.x,
+			    moon.y,
+			    moon.radius*2,
+			    moon.radius*2);
+		drawMoon(moon);
+		nudge(moon);
 	}
-	*/
+}
+
+//this can take any Object with an x or y parameter...
+function nudge(moon){
+	moon.x += random(-2.0, 2.0);
+	moon.y += random(-2.0, 2.0);
 }
 
 function drawMoon(params) {
@@ -72,12 +94,9 @@ function drawMoon(params) {
 	pop();
 }
 
+//this is "broken" now...
 function windowResized() {
 	resizeCanvas(windowWidth, windowHeight);
 	parameters.x = width / 2;
 	parameters.y = height / 2;
 }
-// top = (0, radius)
-// bottom = (0, -radius)
-// 133 / 200 = 2/3 = 0.66666666
-// 133 / 100 = 1.333333
