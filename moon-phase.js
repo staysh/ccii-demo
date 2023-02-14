@@ -14,10 +14,13 @@ function Moon() {
 				this.phase = 0;
 			}
 		}
+		// ^members can be functions too
 };
 
+// this adds draw() to every Moon object
+// note that both draw() and phIncr() are
+// called the same way... the difference is subtle
 Moon.prototype.draw = function () {
-	//let radius = r;
 	let lext;
 	let rext; 
 	if(this.phase <= 0.5) {
@@ -36,8 +39,6 @@ Moon.prototype.draw = function () {
 		bezierVertex(rext, this.radius, rext, -this.radius, 0, -this.radius);
 		bezierVertex(lext, -this.radius, lext, this.radius, 0, this.radius);
 	endShape();
-	//noFill();
-	//ellipse(0, 0, width/2, width/2);
 	pop();
 }
 
@@ -49,17 +50,6 @@ Moon.prototype.nudge = function () {
 Moon.prototype.flate = function () {
 	this.radius += random(-2.0, 2.0);
 }
-
-
-//when called with 'new' the above creates
-//the same Object as this code.
-let moon1 = {
-	x: 0,
-	y: 0,
-	radius: 0,
-	phase: 0.0
-};
-
 
 function setup () {
 	var cnv = createCanvas(windowWidth, windowHeight);
@@ -76,6 +66,7 @@ function setup () {
 
 }
 
+// draw looks pretty tidy...
 function draw () {
 	background(210, 180, 220);
 
@@ -90,6 +81,8 @@ function draw () {
 		moon.phIncr();
 		moon.flate();
 	}
+
+	// passing our own compare logic to sort
 	moons.sort(compareMoons);
 }
 
@@ -97,7 +90,8 @@ function windowResized() {
 	resizeCanvas(windowWidth, windowHeight);
 }
 
-
+// Moon is a 'complex' data type so we can
+// define what it means to "compare" them
 function compareMoons(a, b) {
 	return b.radius - a.radius;
 }
