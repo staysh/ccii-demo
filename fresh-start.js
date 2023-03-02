@@ -1,17 +1,43 @@
 
+let garden = [];
+
 function Point (x,y) {
 	this.x = x; //need to define
 	this.y = y;
 }
 
-let origin;
-/*
-function Flower () {
-	this.numPetals = //define this;
-	this.size = //radius;
-	this.origin = new Point(); //Point object?
+
+function Flower (x,y) {
+	this.numPetals = Math.floor(random(3, 33));
+	this.size = random(10, 300);
+	this.origin = new Point(x,y);
+	this.color = {r: random(200, 255),
+				  g: random(180, 255),
+				  b: random(100, 180)};
 }
-*/
+
+Flower.prototype.draw = function () {
+	let walkout = this.size / (this.numPetals/2) + ((1/this.numPetals) * this.size);
+	let incr = TWO_PI / this.numPetals;
+	push();
+	translate(this.origin.x, this.origin.y);
+	beginShape();
+	fill(this.color.r, this.color.g, this.color.b);
+	for(let i = 0; i < this.numPetals; i++)
+	{
+		let angle = i * incr;
+		vertex(0, 0);
+		bezierVertex(cos(angle) * this.size + sin(angle) * walkout,
+			    	 sin(angle) * this.size - cos(angle) * walkout,
+			    	 cos(angle) * this.size - sin(angle) * walkout,
+			    	 sin(angle) * this.size + cos(angle) * walkout,
+			    	 0,
+			    	 0); 
+	
+	}
+	endShape();
+	pop();
+}
 
 function setup () {
 	var cnv = createCanvas(windowWidth, windowHeight);
@@ -21,36 +47,14 @@ function setup () {
 
 function draw () {
 	background(255, 100, 60);
-	
-	let numPetals = 8;
-	let radius = 400;
-	let walkout = 180;
-
-	let incr = TWO_PI / numPetals;
-	push();
-	translate(width/2, height/2);
-	beginShape();
-	for(let i = 0; i < numPetals; i++)
+	for(flower of garden)
 	{
-		let angle = i * incr;
-		vertex(origin.x, origin.y);
-		bezierVertex(cos(angle) * radius + sin(angle) * walkout,
-			    	 sin(angle) * radius - cos(angle) * walkout,
-			    	 cos(angle) * radius - sin(angle) * walkout,
-			    	 sin(angle) * radius + cos(angle) * walkout,
-			    	 origin.x,
-			    	 origin.y); 
-	
+		flower.draw();
 	}
-	endShape();
-	pop();
-
-	
-
 }
 
-function drawPetal () {
-
+function mouseClicked () {
+	garden.push(new Flower(mouseX, mouseY));
 }
 
 function windowResized() {
