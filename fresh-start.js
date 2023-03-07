@@ -39,6 +39,8 @@ Flower.prototype.draw = function () {
 	pop();
 }
 
+let selectedFlower;
+
 function setup () {
 	var cnv = createCanvas(windowWidth, windowHeight);
 	cnv.style('display', 'block');
@@ -53,10 +55,36 @@ function draw () {
 	}
 }
 
-function mouseClicked () {
-	garden.push(new Flower(mouseX, mouseY));
+function mousePressed () {
+	if(mouseButton == 'left') {
+		
+		selectedFlower = garden.findLast((flower) => {
+			return dist(flower.origin.x,
+				 flower.origin.y,
+				 mouseX,
+				 mouseY) < 10;
+		})
+		
+		console.log(selectedFlower);
+	}
+}
+
+function mouseDragged() {
+	if(selectedFlower != undefined) {
+		selectedFlower.origin.x = mouseX;
+		selectedFlower.origin.y = mouseY;
+	}
 }
 
 function windowResized() {
 	resizeCanvas(windowWidth, windowHeight);
+}
+
+function keyTyped () {
+	if (key == 'd' || key == 'D') {
+		garden.pop();
+	}
+	if (key == 'f' || key == 'F') {
+		garden.push(new Flower(mouseX, mouseY));
+	}
 }
