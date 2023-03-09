@@ -6,20 +6,18 @@ function getMovieData(someFunc) {
 	.then(response => someFunc(response))
 }
 
-/*
-function getMovieData(callback) {
-	fetch('https://raw.githubusercontent.com/sxywu/filmflowers/master/movies.json')
-		.then(response => response.json())
-		.then(result => callback(result));
-}
-*/
-
 let movies = [];
 
 function someFunc (data) {
 	let dataKeys = Object.keys(data);
 	for(k of dataKeys) {
 		movies.push(data[k])
+	}
+	for(movie of movies) {
+		garden.push(new Flower(width/2,
+			                   height/2,
+			                   movie.imdbRating,
+			                   movie.Metascore))
 	}
 }
 
@@ -34,9 +32,9 @@ function Point (x,y) {
 }
 
 
-function Flower (x,y) {
-	this.numPetals = Math.floor(random(3, 33));
-	this.size = random(10, 300);
+function Flower (x,y,p,s) {
+	this.numPetals = Math.floor(p);
+	this.size = s;
 	this.origin = new Point(x,y);
 	this.color = {r: random(200, 255),
 				  g: random(180, 255),
@@ -109,9 +107,9 @@ function windowResized() {
 
 function keyTyped () {
 	if (key == 'd' || key == 'D') {
-		garden.pop();
+		//garden.pop();
 	}
 	if (key == 'f' || key == 'F') {
-		garden.push(new Flower(mouseX, mouseY));
+		//garden.push(new Flower(mouseX, mouseY));
 	}
 }
