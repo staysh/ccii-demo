@@ -1,31 +1,3 @@
-
-
-function getMovieData(someFunc) {
-  fetch('https://raw.githubusercontent.com/sxywu/filmflowers/master/movies.json')
-	.then(response => response.json())
-	.then(response => someFunc(response))
-}
-
-/*
-function getMovieData(callback) {
-	fetch('https://raw.githubusercontent.com/sxywu/filmflowers/master/movies.json')
-		.then(response => response.json())
-		.then(result => callback(result));
-}
-*/
-
-let movies = [];
-
-function someFunc (data) {
-	let dataKeys = Object.keys(data);
-	for(k of dataKeys) {
-		movies.push(data[k])
-	}
-}
-
-getMovieData(someFunc);
-
-
 let garden = [];
 
 function Point (x,y) {
